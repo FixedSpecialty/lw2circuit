@@ -1,0 +1,112 @@
+****************
+* Project03 Circuit Tracer
+* CS-221
+* 04-19-2019
+* Andre Murphy
+**************** 
+
+OVERVIEW:
+
+This project passes in files with either an O, open, X, closed, 1, start, or 2, stop.
+The program creates a path shown by T, trace and displays all of the shortest paths.
+
+
+INCLUDED FILES:
+
+ CircuitTracer - source file
+ CircuitBoard - source file
+ README - this file
+ 
+COMPILING AND RUNNING:
+
+ From the directory containing all source files, compile the
+ driver class (and all dependencies) with the command:
+ $ javac CircuitTracer.java
+ $ javac CircuitBoard.java
+
+The program requires three command-line arguments: 
+
+First argument:
+-s   -- use a stack for storage
+-q   -- use a queue for storage
+Second argument:
+-c   -- run program in console mode
+-g   -- run program in GUI mode (extra-credit (NOTCOMPLETE))
+Third argument: name of the input file
+ 
+ 
+ *****YOU WILL NEED TO SET YOUR ARGUEMENTS INSIDE OF YOUR CHOSEN IDE
+
+ Console output will give the results after the program finishes.
+
+PROGRAM DESIGN AND IMPORTANT CONCEPTS:
+
+This program uses two different classes in order to take the file, transfer it so it becomes readable,
+and then check to see if the given file is formatted correctly. The checker class in this program utilizes
+a scanner in order for the file to be checked for faults and will shoot the user an error for anything
+that could possibly go wrong.
+
+
+TESTING:
+
+Whenever faced with an error I ran it through the given tester class which is CircuitTracerTester which prints
+whether the test was passed or failed and printed where it failed. The one issue with the tester is it would
+not tell you where you failed the valid test so that was where the debugger came in. I used the debugger in
+various scenarios such as when nothing was getting printed, an unknown error was occurring, and whenever I was
+confused as to what I needed to be doing.
+
+
+DISCUSSION:
+ 
+I ran into quite a few problems with this project and it turned out to be a huge time dump. To start,
+I initially was quite confused as to what I was really doing but after some discussion with colleagues
+and tutors, I found out what was needed to be done in order to complete this project. My first code issue
+was that my file formatter was not checking if the character in the file was correct or not. I pulled my check
+code from my format checker tester, added a few try catch blocks, changed the exceptions and for the most part
+it worked. I had to add and remove a few things to optimize it for the project but that quickly cleared up my
+invalid file issues. In the beginning, writing the search algorithm pseudo code, I was conflicted as to how I could
+find the adjacent points and I brain-stormed up an idea to just create a separate method since there was already an existing
+adjacent method inside of TraceState but we were not submitting that so I copied over the method and then began to write 
+the method around that with some help from tutors. After doing that I realized I also was going to need a shortest path method
+so writing that wasn't too hard. I found that if could use 2 loops, and only needed a temporary integer to be the larger path once
+which would sent the integer to the path length and keep looping through the path storage and continue to compare lengths.
+ I also was conflicted with whether I wanted to add all my format checks into the main method
+of circuit board but eventually decided on splitting up all the search methods up into a few categories.
+The first was the format checker which was copied over from my previous format checker assignment and then
+I also had a method to check whether or not there were the correct amount of starting position because my row and column
+count was already too long. The other one I created was a sort of board population which created a board(char[][]) and then
+scanned the file, row then column, and grabbed each item then added it to the the array. I had a few people in the tutoring center
+guide me towards this design since I was unable to add more things to my existing size format checker.
+I was also faced with the problem of my valid tests not printing correctly and that was because I had a misplaced bracket which is a very classic mistake(wow). After being able to see what my valid
+tests looked like I noticed that it was tracing all of the paths onto the same board. The board was printing out
+every adjacent path to every adjacent path and it turns out after an hour and a half of debugging, I had accidentally
+set the private character array for the board to static.
+
+ANALYSIS:
+
+How does the choice of Storage configuration (stack vs queue) affect the order in which paths are explored in 
+the search algorithm? (This requires more than a "stacks are LIFOs and queues are FIFOs" answer.)
+	- With a stack, the program searches adjacent points until it hits a dead end or and and then backtracks.
+	- With a queue, the program does each distance, slowly increasing in distance size. 
+	
+Is the total number of search states (possible paths) affected by the choice of stack or queue?
+	-No, both search states are the same because they still have to check everything that exists in the board.
+	
+What is the Big-Oh runtime for the search algorithm?
+	-Exponential because the amount of adjacent points increases for each adjacent point found. For example, the adjacent point
+	multiplies by the number of paths available from that adjacent point. 1 path -> 2 paths -> 4 paths -> 8 paths
+	
+How is memory use (the maximum number of states in Storage at one time) affected by the choice of underlying structure?
+	-The queue adds paths of a specific length and only takes more storage when the path length increases and the storage of possible positions increases exponentially.
+	-The stack is only remembering completed paths which uses far less storage since a queue is remembering all possible available next moves.
+	
+Does using one of the storage structures usually find a solution faster than the other? Always?
+	- Yes, the speed at which the solution is found is completely random although a stack will find it faster since it checks complete paths
+	where as a queue reads length by length and explores the same path the same amount of times. This is not always true since if the path
+	is very short, a queue will find it much faster since it will look length wise which will be faster than a stack searching random paths.
+	
+Does using either of the storage structures guarantee that the first solution found will be a shortest path?
+	- Yes for a queue because when searching each path length and each possibility, it was stop when the shrortest path is found. This
+	is not true for a stack because for a stack, it just searches randomly.
+ 
+ EXTRA CREDIT: N/A
